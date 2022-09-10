@@ -5,13 +5,13 @@ class InfoMessage:
                  duration: float,
                  distance: float,
                  speed: float,
-                 cal_burnt: float,
+                 calories: float,
                  ) -> None:
         self.training_type = training_type
         self.duration = duration
         self.distance = distance
         self.speed = speed
-        self.cal_burnt = cal_burnt
+        self.calories = calories
 
     def get_message(self) -> str:
         '''Результаты тренировки'''
@@ -19,7 +19,7 @@ class InfoMessage:
                     f'Длительность: {self.duration:.3f} ч.; '
                     f'Дистанция: {self.distance:.3f} км; '
                     f'Ср. скорость: {self.speed:.3f} км/ч; '
-                    f'Потрачено ккал: {self.cal_burnt:.3f}.'
+                    f'Потрачено ккал: {self.calories:.3f}.'
                     )
         return get_mess
 
