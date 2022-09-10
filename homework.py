@@ -113,15 +113,15 @@ class Swimming(Training):
         action: int,
         duration: float,
         weight: float,
-        pool_length: float,
+        length_pool: float,
         count_pool: int
     ):
         super().__init__(action, duration, weight)
-        self.pool_length = pool_length
+        self.length_pool = length_pool
         self.count_pool = count_pool
 
     def get_mean_speed(self):
-        pool_speed = (self.pool_length * self.count_pool
+        pool_speed = (self.length_pool * self.count_pool
                       / self.M_IN_KM / self.duration)
 #                     м / ((м/км) * ч) = км/ч
         return pool_speed
