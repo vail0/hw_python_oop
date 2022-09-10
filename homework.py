@@ -18,7 +18,7 @@ class InfoMessage:
                     f'Длительность тренировки: {self.duration:.3f} ч.; '
                     f'Дистанциия {self.distance:.3f} км; '
                     f'Средняя скорость {self.avg_speed:.3f} км/ч; '
-                    f'Потрачено: {self.cal_burnt:.3f} ккал'
+                    f'Потрачено: {self.cal_burnt:.3f} ккал.'
                     )
         return get_mess
 
