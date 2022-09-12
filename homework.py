@@ -140,7 +140,10 @@ def read_package(workout_type: str, data: list) -> Training:
         'RUN': Running,
         'WLK': SportsWalking
     }
-    return training_type[workout_type](*data)
+    if workout_type in training_type:
+        return training_type[workout_type](*data)
+    else:
+        return print('косяк со словарём')
 
 
 def main(training: Training) -> None:
