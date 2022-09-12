@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Dict, Type
 
 
 @dataclass
@@ -54,7 +55,7 @@ class Training:
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        raise    # Не трогай (по заданию)           меняем
+        raise NotImplementedError('не определён тип тренировки')
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
@@ -133,9 +134,9 @@ class Swimming(Training):
 #               км/ч * кг
 
 
-def read_package(workout_type: str, data: list) -> Training:
+def read_package(workout_type: str, data: list[float]) -> Training:
     """Прочитать данные полученные от датчиков."""
-    training_type = {
+    training_type: Dict[str, Type[Training]] = {
         'SWM': Swimming,
         'RUN': Running,
         'WLK': SportsWalking
@@ -143,7 +144,7 @@ def read_package(workout_type: str, data: list) -> Training:
     if workout_type in training_type:
         return training_type[workout_type](*data)
     else:
-        return print('косяк со словарём')
+        raise ValueError('Тип тренировки не определён')
 
 
 def main(training: Training) -> None:
