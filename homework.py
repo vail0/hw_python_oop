@@ -96,7 +96,6 @@ class SportsWalking(Training):
                  * self.BURN_KOEF_2 * self.weight)
                 * self.duration * self.MIN_IN_HOUR
                 )
-#               ((своя ед. счисл.) * кг) * ч * мин/ч = () * кг * мин
 
 
 class Swimming(Training):
@@ -137,8 +136,7 @@ def read_package(workout_type: str, data: List[float]) -> Training:
     }
     if workout_type in training_type:
         return training_type[workout_type](*data)
-    else:
-        raise ValueError('Тип тренировки не определён')
+    raise ValueError('Тип тренировки не определён')
 
 
 def main(training: Training) -> None:
