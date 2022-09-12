@@ -1,3 +1,7 @@
+from dataclasses import dataclass
+
+
+@dataclass
 class InfoMessage:
     """Информационное сообщение о тренировке."""
     def __init__(self,
@@ -27,10 +31,9 @@ class InfoMessage:
 class Training:
     """Базовый класс тренировки."""
 
-    LEN_STEP = 0.65
-#    LEN_PADDLE = 1.38
-    M_IN_KM = 1000
-    MIN_IN_HOUR = 60
+    LEN_STEP: float = 0.65
+    M_IN_KM: int = 1000
+    MIN_IN_HOUR: int = 60
 
     def __init__(self,
                  action: int,
@@ -43,17 +46,15 @@ class Training:
 
     def get_distance(self) -> float:
         """Получить дистанцию в км."""
-        dist = self.action * self.LEN_STEP / self.M_IN_KM   # для бега и ходьбы
-        return dist  # км
+        return self.action * self.LEN_STEP / self.M_IN_KM   # км
 
     def get_mean_speed(self) -> float:
         """Получить среднюю скорость движения."""
-        avg_speed = self.get_distance() / self.duration
-        return avg_speed  # км/ч
+        return self.get_distance() / self.duration  # км/ч
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        pass    # Не трогай (по заданию)
+        raise    # Не трогай (по заданию)           меняем
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
@@ -68,19 +69,22 @@ class Training:
 
 class Running(Training):
     """Тренировка: бег."""
+    BURN_KOEF_1: int = 18
+    BURN_KOEF_2: int = 20
+
     def get_spent_calories(self) -> float:
-        koef_1 = 18
-        koef_2 = 20
-        spent = ((koef_1 * self.get_mean_speed() - koef_2)
-                 * self.weight / self.M_IN_KM
-                 * self.duration * self.MIN_IN_HOUR
-                 )
+        return ((self.BURN_KOEF_1 * self.get_mean_speed() - self.BURN_KOEF_2)
+                * self.weight / self.M_IN_KM
+                * self.duration * self.MIN_IN_HOUR
+                )
 #               км/ч * кг / (м/км) * ч * (мин/ч) -> кг * м/мин
-        return spent
 
 
 class SportsWalking(Training):
     """Тренировка: спортивная ходьба."""
+    BURN_KOEF_1: float = 0.035
+    BURN_KOEF_2: float = 0.029
+
     def __init__(
         self,
         action: int,
@@ -92,21 +96,19 @@ class SportsWalking(Training):
         self.height = height
 
     def get_spent_calories(self) -> float:
-        koef_1 = 0.035
-        koef_2 = 0.029
-        spent = ((koef_1 * self.weight
+        return ((self.BURN_KOEF_1 * self.weight
                  + (self.get_mean_speed()**2 // self.height)
-                 * koef_2 * self.weight)
-                 * self.duration * self.MIN_IN_HOUR
-                 )
+                 * self.BURN_KOEF_2 * self.weight)
+                * self.duration * self.MIN_IN_HOUR
+                )
 #               ((своя ед. счисл.) * кг) * ч * мин/ч = () * кг * мин
-
-        return spent
 
 
 class Swimming(Training):
     """Тренировка: плавание."""
     LEN_STEP = 1.38
+    BURN_KOEF_1: float = 1.1
+    BURN_KOEF_2: int = 2
 
     def __init__(
         self,
@@ -121,17 +123,14 @@ class Swimming(Training):
         self.count_pool = count_pool
 
     def get_mean_speed(self):
-        pool_speed = (self.length_pool * self.count_pool
-                      / self.M_IN_KM / self.duration)
+        return (self.length_pool * self.count_pool
+                / self.M_IN_KM / self.duration)
 #                     м / ((м/км) * ч) = км/ч
-        return pool_speed
 
     def get_spent_calories(self) -> float:
-        koef_1 = 1.1
-        koef_2 = 2
-        spent = (self.get_mean_speed() + koef_1) * koef_2 * self.weight
+        return ((self.get_mean_speed() + self.BURN_KOEF_1)
+                * self.BURN_KOEF_2 * self.weight)
 #               км/ч * кг
-        return spent
 
 
 def read_package(workout_type: str, data: list) -> Training:
